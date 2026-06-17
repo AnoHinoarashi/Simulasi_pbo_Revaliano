@@ -3,7 +3,6 @@
 require_once 'Pendaftaran.php';
 
 class PendaftaranPrestasi extends Pendaftaran {
-    // Properti tambahan spesifik anak
     private $jenisPrestasi;
     private $tingkatPrestasi;
 
@@ -13,17 +12,21 @@ class PendaftaranPrestasi extends Pendaftaran {
         $this->tingkatPrestasi = $tingkat;
     }
 
-    // Implementasi metode abstrak: Jalur prestasi mendapatkan potongan biaya pendaftaran sebesar 50.000
+    /**
+     * OVERRIDING: Jalur Prestasi
+     * Total Biaya = Biaya Pendaftaran Dasar - Potongan Rp50.000
+     */
     public function hitungTotalBiaya() {
         $potongan = 50000;
-        return max(0, $this->biayaPendaftaranDasar - $potongan);
+        $total = $this->biayaPendaftaranDasar - $potongan;
+        // Memastikan nilai tidak minus (jika ada kondisi biaya dasar sangat rendah)
+        return max(0, $total);
     }
 
     public function tampilkanInfoJalur() {
         return "Jalur: Prestasi | Jenis: {$this->jenisPrestasi} | Tingkat: {$this->tingkatPrestasi}";
     }
 
-    // Metode Query Spesifik: Mengambil semua data pendaftar Prestasi
     public static function getDaftarPrestasi($db) {
         $query = "SELECT id_pendaftaran, nama_calon, asal_sekolah, nilai_ujian, biaya_pendaftaran_dasar, jenis_prestasi, tingkat_prestasi 
                   FROM tabel_pendaftaran 

@@ -3,7 +3,6 @@
 require_once 'Pendaftaran.php';
 
 class PendaftaranKedinasan extends Pendaftaran {
-    // Properti tambahan spesifik anak
     private $skIkatanDinas;
     private $instansiSponsor;
 
@@ -13,17 +12,18 @@ class PendaftaranKedinasan extends Pendaftaran {
         $this->instansiSponsor = $sponsor;
     }
 
-    // Implementasi metode abstrak: Jalur kedinasan ada tambahan biaya matrikulasi/seragam sebesar 100.000
+    /**
+     * OVERRIDING: Jalur Kedinasan
+     * Total Biaya = Biaya Pendaftaran Dasar * 1.25 (Surcharge 25%)
+     */
     public function hitungTotalBiaya() {
-        $biayaTambahan = 100000;
-        return $this->biayaPendaftaranDasar + $biayaTambahan;
+        return $this->biayaPendaftaranDasar * 1.25;
     }
 
     public function tampilkanInfoJalur() {
         return "Jalur: Kedinasan | Sponsor: {$this->instansiSponsor} | SK: {$this->skIkatanDinas}";
     }
 
-    // Metode Query Spesifik: Mengambil semua data pendaftar Kedinasan
     public static function getDaftarKedinasan($db) {
         $query = "SELECT id_pendaftaran, nama_calon, asal_sekolah, nilai_ujian, biaya_pendaftaran_dasar, sk_ikatan_dinas, instansi_sponsor 
                   FROM tabel_pendaftaran 
